@@ -1,1 +1,6 @@
 SubstantialDualism: Сделай 10 приседаний
+SubstantialDualism: /menu, Голосом : 'меню', - Меню с опциями
+SubstantialDualism: /menu, Голосом : 'меню', - Меню с опциями
+SubstantialDualism: /menu, Голосом : 'меню', - Меню с опциями
+SubstantialDualism: /menu, Голосом : 'меню', - Меню с опциями
+SubstantialDualism: /menu, Голосом : 'меню', - Меню с опциями

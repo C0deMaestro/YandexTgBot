@@ -11,6 +11,8 @@ saved_messages_file = "saved_messages.txt"
 session = Session.from_yandex_passport_oauth_token(oauth_token, catalog_id)
 bot = telebot.TeleBot(TOKEN)
 
+save_state = {}
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -34,14 +36,16 @@ def show_mygit(message):
 @bot.message_handler(commands=['nextstep'])
 def next_step(message):
     bot.send_message(message.chat.id,f"Сохраню следующее сообщение, если вы не против...")
+    save_state[message.chat.id] = True
 
 
 # Сохранение следующего сообщения пользователя
-@bot.message_handler(func=lambda message: message.text and message.text.lower() != '/nextstep')
+@bot.message_handler(func=lambda message: message.chat.id in save_state and save_state[message.chat.id])
 def save_next_message(message):
     with open(saved_messages_file, "a", encoding="utf-8") as file:
         file.write(f"{message.from_user.username}: {message.text}\n")
     bot.send_message(message.chat.id, "Сохранено! Спасибо.")
+    save_state[message.chat.id] = False
 
 # Отображение доступных опций
 def show_options(chat_id):
