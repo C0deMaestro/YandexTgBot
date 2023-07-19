@@ -29,12 +29,12 @@ def start(message):
 def show_menu(message):
     show_options(message.chat.id)
 
-# Следующий шаг
+# Ссылка на гит
 @bot.message_handler(commands=['mygit'])
 def show_mygit(message):
     bot.send_message(message.chat.id,f"Ссылка на мой гит:\nhttps://github.com/C0deMaestro?tab=repositories")
 
-# Ссылка на гит
+# Следующий шаг
 @bot.message_handler(commands=['nextstep'])
 def next_step(message):
     bot.send_message(message.chat.id,f"Сохраню следующее сообщение, если вы не против...")
@@ -62,9 +62,9 @@ def show_options(chat_id):
 # Отображение списка команд
 def show_commands(chat_id):
     commands = [
-        "/menu, Голосом : 'меню', - Меню с опциями",
-        "/nextstep, Голосом : 'следующий шаг', - Рассказать о следующих шагах",
-        "/mygit, Голосом : 'ссылка на гит', - Получить ссылку на git"
+        "/menu | Голосом : 'меню' - Меню с опциями",
+        "/nextstep | Голосом : 'следующий шаг', - Рассказать о следующих шагах",
+        "/mygit | Голосом : 'ссылка на гит', - Получить ссылку на git"
     ]
 
     commands_text = "Список команд (их можно вызывать голосом!):\n" + "\n".join(commands)
@@ -95,7 +95,6 @@ def button_handler(call):
         send_sql_nosql_voice(chat_id)
     elif option == 'love_story_voice':
         send_love_story_voice(chat_id)
-
     bot.answer_callback_query(call.id)
 
 
