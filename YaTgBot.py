@@ -6,7 +6,7 @@ import requests
 TOKEN = "6363656442:AAHGEacNHFZO_eFlpu-t5BXYihQTkCRULXg"
 oauth_token = "y0_AgAAAAAIbQyoAATuwQAAAADn6fFPanlxeFjFR1Wdp-eir0q-Kz6X-rk"
 catalog_id = "b1gp5vbua4qdjpm28bbe"
-saved_messages_file = "saved_messages.txt"
+saved_messages_file = "data/saved_messages.txt"
 
 session = Session.from_yandex_passport_oauth_token(oauth_token, catalog_id)
 bot = telebot.TeleBot(TOKEN)
@@ -17,8 +17,10 @@ save_state = {}
 @bot.message_handler(commands=['start'])
 def start(message):
     user = message.from_user
-    bot.send_message(message.chat.id, f"Привет, {user.first_name}! Это бот, который поможет нам познакомиться. "
-                                      "Чтобы узнать больше обо мне, используйте команды или кнопки ниже.")
+    bot.send_message(message.chat.id, f"Привет, {user.first_name}! Это бот, который поможет тебе познакомиться с его создателем - Артуром! "
+                                      "Чтобы узнать больше обо мне, используйте команды или кнопки ниже."
+                                      " Вы также можете задавать команды голсом (меню, следующий шаг, ссылка на гит)"
+                                      " или отправить голосовое сообщение до 30 секунд, которое мой бот успешно переведет в текст)")
     show_menu(message)
     show_commands(message.chat.id)
 
@@ -40,7 +42,7 @@ def next_step(message):
 
 
 # Сохранение следующего сообщения пользователя
-@bot.message_handler(func=lambda message: message.chat.id in save_state and save_state[message.chat.id])
+@bot.message_handler(func=lambda message: message.chat.id in save_state and save_state[message.chat.id] == True)
 def save_next_message(message):
     with open(saved_messages_file, "a", encoding="utf-8") as file:
         file.write(f"{message.from_user.username}: {message.text}\n")
@@ -99,11 +101,11 @@ def button_handler(call):
 
 # Отправка последнего селфи
 def send_latest_selfie(chat_id):
-    bot.send_photo(chat_id, photo=open('D:\\YndxTestBot\\photo\\latest_selfie.jpg', 'rb'))
+    bot.send_photo(chat_id, photo=open('photos\\latest_selfie.jpg', 'rb'))
 
 # Отправка фото из старшей школы
 def send_school_photo(chat_id):
-    bot.send_photo(chat_id, photo=open('D:\\YndxTestBot\\photo\\school_photo.jpg', 'rb'))
+    bot.send_photo(chat_id, photo=open('photos\\school_photo.jpg', 'rb'))
 
 # Отправка поста о главном увлечении
 def send_hobby_post(chat_id):
@@ -133,19 +135,19 @@ def send_voice_options(chat_id):
 
 # Отправка голосового сообщения "Объясняю своей бабушке, что такое GPT"
 def send_gpt_voice(chat_id):
-    voice_path = 'D:\\YndxTestBot\\photo\\gpt_voice.ogg'  # Путь к голосовому сообщению
+    voice_path = 'voices\\gpt_voice.ogg'  # Путь к голосовому сообщению
     with open(voice_path, 'rb') as voice:
         bot.send_voice(chat_id, voice)
 
 # Отправка голосового сообщения "Разница между SQL и NoSQL"
 def send_sql_nosql_voice(chat_id):
-    voice_path = 'D:\\YndxTestBot\\photo\\sql_nosql_voice.ogg'  # Путь к голосовому сообщению
+    voice_path = 'voices\\sql_nosql_voice.ogg'  # Путь к голосовому сообщению
     with open(voice_path, 'rb') as voice:
         bot.send_voice(chat_id, voice)
 
 # Отправка голосового сообщения "История первой любви"
 def send_love_story_voice(chat_id):
-    voice_path = 'D:\\YndxTestBot\\photo\\love_story_voice.ogg'  # Путь к голосовому сообщению
+    voice_path = 'voices\\love_story_voice.ogg'  # Путь к голосовому сообщению
     with open(voice_path, 'rb') as voice:
         bot.send_voice(chat_id, voice)
 
@@ -160,28 +162,31 @@ def handle_voice_message(message):
     with open('voice_message.oga', 'rb') as f:
         data = f.read()
     # Распознавание речи
-    recognizeShortAudio = ShortAudioRecognition(session)
+    if message.voice.duration < 30:
+        recognizeShortAudio = ShortAudioRecognition(session)
 
-    # Передаем файл и его формат в метод `.recognize()`,
-    # который возвращает строку с текстом
-    text = recognizeShortAudio.recognize(
-        data, sampleRateHertz='48000')
+        # Передаем файл и его формат в метод `.recognize()`,
+        # который возвращает строку с текстом
+        text = recognizeShortAudio.recognize(
+            data, sampleRateHertz='48000')
 
-    flag = True
+        flag = True
 
-    if text.lower() == "меню":
-        flag = False
-        show_menu(message)
-    elif "ссылка на ги" in text.lower():
-        flag = False
-        show_mygit(message)
-    elif text.lower() == "следующий шаг":
-        flag = False
-        next_step(message)
+        if text.lower() == "меню":
+            flag = False
+            show_menu(message)
+        elif "ссылка на ги" in text.lower():
+            flag = False
+            show_mygit(message)
+        elif text.lower() == "следующий шаг":
+            flag = False
+            next_step(message)
 
-    # Отправка распознанного текста пользователю
-    if flag:
-        bot.send_message(message.chat.id, f"Распознанный текст:\n{text}")
+        # Отправка распознанного текста пользователю
+        if flag:
+            bot.send_message(message.chat.id, f"Распознанный текст:\n{text}")
+    else:
+        bot.send_message(message.chat.id, f"Для распознования отправьте пожалуйста голосовое сообщение короче 30 секунд.")
 
 def download_voice_file(url):
     response = requests.get(url)
