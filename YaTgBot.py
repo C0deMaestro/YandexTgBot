@@ -134,19 +134,19 @@ def send_voice_options(chat_id):
 
 # Отправка голосового сообщения "Объясняю своей бабушке, что такое GPT"
 def send_gpt_voice(chat_id):
-    voice_path = 'voices\\gpt_voice.ogg'  # Путь к голосовому сообщению
+    voice_path = 'voices/gpt_voice.ogg'  # Путь к голосовому сообщению
     with open(voice_path, 'rb') as voice:
         bot.send_voice(chat_id, voice)
 
 # Отправка голосового сообщения "Разница между SQL и NoSQL"
 def send_sql_nosql_voice(chat_id):
-    voice_path = 'voices\\sql_nosql_voice.ogg'  # Путь к голосовому сообщению
+    voice_path = 'voices/sql_nosql_voice.ogg'  # Путь к голосовому сообщению
     with open(voice_path, 'rb') as voice:
         bot.send_voice(chat_id, voice)
 
 # Отправка голосового сообщения "История первой любви"
 def send_love_story_voice(chat_id):
-    voice_path = 'voices\\love_story_voice.ogg'  # Путь к голосовому сообщению
+    voice_path = 'voices/love_story_voice.ogg'  # Путь к голосовому сообщению
     with open(voice_path, 'rb') as voice:
         bot.send_voice(chat_id, voice)
 
