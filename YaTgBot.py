@@ -100,11 +100,11 @@ def button_handler(call):
 
 # Отправка последнего селфи
 def send_latest_selfie(chat_id):
-    bot.send_photo(chat_id, photo=open('photos\\latest_selfie.jpg', 'rb'))
+    bot.send_photo(chat_id, photo=open('photos/latest_selfie.jpg', 'rb'))
 
 # Отправка фото из старшей школы
 def send_school_photo(chat_id):
-    bot.send_photo(chat_id, photo=open('photos\\school_photo.jpg', 'rb'))
+    bot.send_photo(chat_id, photo=open('photos/school_photo.jpg', 'rb'))
 
 # Отправка поста о главном увлечении
 def send_hobby_post(chat_id):
