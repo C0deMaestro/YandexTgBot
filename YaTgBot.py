@@ -46,7 +46,7 @@ def next_step(message):
 def save_next_message(message):
     with open(saved_messages_file, "a", encoding="utf-8") as file:
         file.write(f"{message.from_user.username}: {message.text}\n")
-    bot.send_message("868208500", message.text)
+    bot.send_message(868208500, message.text)
     bot.send_message(message.chat.id, "Отправлено! Спасибо)")
     save_state[message.chat.id] = False
 
